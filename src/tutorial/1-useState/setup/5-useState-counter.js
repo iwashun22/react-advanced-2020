@@ -8,6 +8,7 @@ const UseStateCounter = () => {
   const complexIncrease = () => {
     setTimeout(() => {
       // setValue(value + 1); this will not work if you click multiple time
+      // it will only increase one because while you are clicking, the value is still same (0 at the first time)
       setValue(prevState => {
         return prevState + 1;
       })
