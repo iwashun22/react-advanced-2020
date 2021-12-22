@@ -14,7 +14,7 @@ const UseEffectCleanup = () => {
     console.log('useEffect');
     window.addEventListener('resize', checkSize);
 
-    // this function will run before rendering
+    // this function will run before re-rendering
     return () => {
       console.log('clean up');
       window.removeEventListener('resize', checkSize);
