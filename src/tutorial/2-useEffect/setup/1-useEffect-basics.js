@@ -11,10 +11,12 @@ const UseEffectBasics = () => {
       document.title = `New Messages(${value})`;
     }
   }, [value]);
+  // second parameter will be an array of dependencies. If the value is change and re-render, the code will run.
 
   useEffect(() => {
     console.log('initial render');
   }, []);
+  // this will only run on initial render
 
   console.log('render component');
   return (
