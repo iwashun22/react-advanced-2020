@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getAllJSDocTags, getSourceMapRange } from 'typescript';
 
 const url = 'https://api.github.com/users/QuincyLarson';
 
