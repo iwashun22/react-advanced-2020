@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { v4 as uuidV4 } from 'uuid';
 // JS
 // const input = document.getElementById('myText');
 // const inputValue = input.value
@@ -8,10 +9,22 @@ import React, { useState } from 'react';
 const ControlledInputs = () => {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
+  const [people, setPeople] = useState([]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.info(firstName, email);
+    if(firstName && email) {
+      const person = { id: uuidV4(), firstName, email };
+      console.log(person);
+      setPeople((people) => {
+        return [...people, person];
+      });
+      setFirstName('');
+      setEmail('');
+    }
+    else {
+      console.log('empty values');
+    }
   }
 
   // when you are working on form in React, you need to use onChange to trigger the event and get the input from users, by accessng event.target.value
@@ -43,6 +56,17 @@ const ControlledInputs = () => {
           </div>
           <button type="submit">add person</button>
         </form>
+        {
+          people.map((person) => {
+            const { id, firstName, email } = person;
+            return (
+              <div className="item" key={id}>
+                <h4>{firstName}</h4>
+                <p>{email}</p>
+              </div>
+            );
+          })
+        }
       </article>
     </React.Fragment>
   );
