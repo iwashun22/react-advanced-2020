@@ -1,15 +1,24 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useContext } from 'react'
 import { useFetch } from '../../9-custom-hooks/final/2-useFetch'
 
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
 const url = 'https://course-api.com/javascript-store-products'
-
+// const CartContext = React.createContext();
 // every time props or state changes, component re-renders
 
 const Index = () => {
   const { products } = useFetch(url)
   const [count, setCount] = useState(0)
+  const [cart, setCart] = useState(0);
+
+  // if you pass a function to props, it will re-render because JavaScript thinks this function is recreated when re-render and the props changed
+  // this is from preventing from re-render while the callback props not change
+  const addToCart = useCallback(() => {
+    setCart(cart + 1);
+  }, [cart]);
+  // once the value of the 'cart' changes, it will trigger to recreate this function
+  // but when anyother value changed, it won't
 
   return (
     <>
@@ -17,31 +26,42 @@ const Index = () => {
       <button className='btn' onClick={() => setCount(count + 1)}>
         click me
       </button>
-      <BigList products={products} />
+      <h1 style={{marginTop: '3rem'}}>Cart : {cart}</h1>
+      {/* <CartContext.Provider value={{ addToCart }}> */}
+      <BigList products={products} addToCart={addToCart} />
+      {/* </CartContext.Provider> */}
     </>
   )
 }
 
-const BigList = ({ products }) => {
+// prevent from re-render
+// if the value of 'products' doesn't change, it won't trigger re-render
+const BigList = React.memo(({ products, addToCart }) => {
+  useEffect(() => {
+    console.log('big list called');
+  })
   return (
     <section className='products'>
       {products.map((product) => {
-        return <SingleProduct key={product.id} {...product}></SingleProduct>
+        return <SingleProduct key={product.id} {...product} addToCart={addToCart}></SingleProduct>
       })}
     </section>
   )
-}
+});
 
-const SingleProduct = ({ fields }) => {
+const SingleProduct = ({ fields, addToCart }) => {
   let { name, price } = fields
   price = price / 100
   const image = fields.image[0].url
-
+  useEffect(() => {
+    console.count('single item called')
+  })
   return (
     <article className='product'>
       <img src={image} alt={name} />
       <h4>{name}</h4>
       <p>${price}</p>
+      <button onClick={addToCart}>add to cart</button>
     </article>
   )
 }
