@@ -31,6 +31,7 @@ const Index = () => {
   // once the value of the 'cart' changes, it will trigger to recreate this function
   // but when anyother value changed, it won't
 
+  // useMemo is for function that returns a value
   const mostExpensive = useMemo(() => calculateMostExpensive(products), [products]);
   return (
     <>
